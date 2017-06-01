@@ -17,13 +17,13 @@ http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/cor
 	<spring:beans>
 		<spring:import resource="classpath:order-system.xml" />
 	</spring:beans>
+    <munit:before-test name="processOrders-execute.before.each.test" description="Before tests actions">
+        <munit:set payload="#[[{'orderID':444, 'location':'worldwide','price':44.04}, {'orderID':555, 'location':'worldwide','price':55.05}, {'orderID':333, 'location':'national','price':33.03}]]" doc:name="Set Message: Payload contains International and Domestic orders"/>
+    </munit:before-test>
 	<munit:test
 		name="processOrders_payloadReturnsTwoElementsOfTypeJavaMap_True"
 		description="Calling processOrders flow will return payload containing two objects of type java map"
 	>
-		<munit:set
-			payload="#[[{'orderID':444, 'location':'worldwide','price':44.04}, {'orderID':555, 'location':'worldwide','price':55.05}, {'orderID':333, 'location':'national','price':33.03}]]"
-			doc:name="Set Message: Payload contains International and Domestic orders" />
 		<flow-ref
 			name="processOrders"
 			doc:name="processOrders" />
@@ -41,9 +41,6 @@ http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/cor
 		name="processOrders_InternationalKeyContainsWorldwideOrders_True"
 		description="Calling processOrders flow returns payload containing worldwide orders when key is international"
 	>
-		<munit:set
-			payload="#[[{'orderID':444, 'location':'worldwide','price':44.04}, {'orderID':555, 'location':'worldwide','price':55.05}]]"
-			doc:name="Set Message: Payload contains International orders only" />
 		<flow-ref
 			name="processOrders"
 			doc:name="processOrders" />
@@ -66,9 +63,6 @@ http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/cor
 		name="processOrders_DomesticKeyContainsNationalOrders_True"
 		description="Calling processOrders flow returns payload containing national orders when key is domestic"
 	>
-		<munit:set
-			payload="#[[{'orderID':444, 'location':'worldwide','price':44.04}, {'orderID':555, 'location':'worldwide','price':55.05}, {'orderID':333, 'location':'national','price':33.03}]]"
-			doc:name="Set Message: Payload contains all orders only" />
 		<flow-ref
 			name="processOrders"
 			doc:name="processOrders" />
